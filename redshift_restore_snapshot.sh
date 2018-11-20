@@ -43,14 +43,7 @@ main(){
     aws redshift restore-from-cluster-snapshot --cluster-identifier $1 --snapshot-identifier "${LAST_SNAPSHOT}" --cluster-subnet-group-name ${SUBNET_GROUP_NAME} --availability-zone "${AVAILABILITY_ZONE}" --elastic-ip ${PUBLIC_IP} --vpc-security-group-ids "${VPC_SECURITY_GROUPS}" --cluster-parameter-group-name "${PARAMETER_GROUP_NAME}" --publicly-accessible
     echo -e "\nRestoring $1 cluster from snapshot $LAST_SNAPSHOT..."
 
-    # Wait for the snapshot to be restored
-    until aws redshift describe-clusters --cluster-identifier $1 > /dev/null 2>&1;
-    do
-        printf "."
-        sleep 1
-    done
-
-    echo -e "\nCluster $1 sucessfully restored!"
+    echo -e "\nCluster $1 sucessfully restored! Be aware that the restore process might take a while."
     exit 0
 }
 
