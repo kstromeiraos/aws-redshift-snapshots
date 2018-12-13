@@ -44,7 +44,7 @@ main(){
     echo -e "\nRestoring $1 cluster from snapshot $LAST_SNAPSHOT..."
 
     # Wait for the cluster to be restored
-    until [[ `aws redshift describe-clusters --cluster-identifier $1 | jq '.Clusters[].RestoreStatus.Status'` != "completed" ]];
+    until aws redshift describe-clusters --cluster-identifier $1 | jq '.Clusters[].RestoreStatus.Status' | grep -q 'completed' > /dev/null 2>&1;
     do
         printf "."
         sleep 1
